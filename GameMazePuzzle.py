@@ -3,15 +3,19 @@ import sys
 import random
 
 class GameObject(pygame.sprite.Sprite):
-    def __init__(self, x, y, color, width, height):
+    def __init__(self, x, y, color, width, height, image_path=None,):
         super().__init__()
-        self.image = pygame.Surface([width,height])
-        self.image.fill(color)
+        if image_path:
+            self.image = pygame.image.load(image_path).convert_alpha()
+            self.image = pygame.transform.scale(self.image, (width, height))
+        else:
+            self.image = pygame.Surface([width,height])
+            self.image.fill(color)
         self.rect = self.image.get_rect(topleft=(x, y))
 
 class Player(GameObject):
     def __init__(self, x, y):
-        super().__init__(x, y, (0, 255, 0), 40, 40)
+        super().__init__(x, y, (0, 255, 0), 40, 40, image_path="player.png")
         self.speed = 5
         self.inventory = []
         self.health = 3
@@ -46,7 +50,7 @@ class Enemy(GameObject):
 
 class Item(GameObject):
     def __init__(self, x, y, color):
-        super().__init__(x, y, color, 20, 20)
+        super().__init__(x, y, color, 20, 20, image_path="key.png")
 
 class DungeonGame:
     def __init__(self):
@@ -77,7 +81,7 @@ class DungeonGame:
             self.all_sprites.add(e)
             self.enemies.add(e)
 
-        self.door = GameObject(730, 530, (139, 69, 19), 50, 60)
+        self.door = GameObject(730, 530, (139, 69, 19), 50, 60, image_path="pintu.png")
         self.all_sprites.add(self.door)
 
         self.is_running = True
@@ -145,7 +149,7 @@ class DungeonGame:
         if pygame.sprite.spritecollide(self.player, self.enemies, False):
             print("Kena Musuh! Game Over.")
             self.player.health -= 1
-            print("Terkena Musuh! Sisa nyawa : {self.player.health}")
+            print(f"Terkena Musuh! Sisa nyawa : {self.player.health}")
 
             if self.player.health > 0:
                 self.player.respawn()
