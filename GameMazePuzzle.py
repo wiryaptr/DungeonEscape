@@ -144,9 +144,9 @@ class DungeonGame:
                 "W   E  W   K   W",
                 "W  WWWWWWW WW  W",
                 "W     E        W",
-                "W  W  WWWWWWW  W",
-                "W  W   K       W",
-                "W  WWWWWWW  W  W",
+                "W  W WWWWWWWW  W",
+                "W  W   KWWWW   W",
+                "W  W       W   W",
                 "WWWWWWWWWWWWWWWW"
             ],
             [   # --- STAGE 2 ---
