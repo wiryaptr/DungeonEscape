@@ -11,7 +11,7 @@ FPS = 60
 class GameObject(pygame.sprite.Sprite):
     def __init__(self, x, y, color, width, height, image_path=None):
         super().__init__()
-        
+        # Membuat fallback kotak warna dulu
         self.image = pygame.Surface([width, height])
         self.image.fill(color)
         
@@ -32,7 +32,7 @@ class Wall(GameObject):
 
 class Player(GameObject):
     def __init__(self, x, y):
-        super().__init__(x, y, (0, 255, 0), 40, 40, image_path="player.png")
+        super().__init__(x, y, (0, 255, 0), 40, 40, image_path="assets/images/player.png")
         self.speed = 3
         self.inventory = []
         self.health = 3
@@ -72,7 +72,7 @@ class Player(GameObject):
 
 class Enemy(GameObject):
     def __init__(self, x, y, distance):
-        super().__init__(x, y, (255, 0, 0), 40, 40, image_path="enemy.png")
+        super().__init__(x, y, (255, 0, 0), 40, 40, image_path="assets/images/enemy.png")
         self.start_x = x
         self.distance = distance
         self.speed = random.randint(1, 2) 
@@ -95,7 +95,7 @@ class Enemy(GameObject):
 
 class Item(GameObject):
     def __init__(self, x, y, color):
-        super().__init__(x, y, color, 20, 20, image_path="key.png")
+        super().__init__(x, y, color, 20, 20, image_path="assets/images/key.png")
 
 class DungeonGame:
     def __init__(self):
@@ -107,18 +107,18 @@ class DungeonGame:
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont("Arial", 24)
         
-        #SYSTEM AUDIO
-        self.sfx_key = self.load_sound("dapat_kunci.mp3")
-        self.sfx_hit = self.load_sound("kena_musuh.mp3")
-        self.sfx_win = self.load_sound("menang.mp3")
+        # SYSTEM AUDIO
+        self.sfx_key = self.load_sound("assets/sounds/dapat_kunci.mp3")
+        self.sfx_hit = self.load_sound("assets/sounds/kena_musuh.mp3")
+        self.sfx_win = self.load_sound("assets/sounds/menang.mp3")
 
         try:
             # Memuat background musik dan loop selamanya
-            pygame.mixer.music.load("musik_tema.mp3")
+            pygame.mixer.music.load("assets/sounds/musik_tema.mp3")
             pygame.mixer.music.set_volume(0.3)
             pygame.mixer.music.play(-1) 
         except Exception:
-            print("Warning: File 'musik_tema.mp3' tidak ditemukan, game akan dimainkan tanpa musik BGM.")
+            print("Warning: File 'assets/sounds/musik_tema.mp3' tidak ditemukan, game akan dimainkan tanpa musik BGM.")
         # ----------------------------------------------------
 
         self.all_sprites = pygame.sprite.Group()
@@ -129,7 +129,7 @@ class DungeonGame:
         # Konfigurasi Level
         self.current_level_index = 0
         # --- DAFTAR LEVEL (MAP) ---
-         
+
         # 'W' = Wall (Tembok)
         # 'K' = Key (Kunci)
         # 'E' = Enemy (Musuh)
@@ -162,7 +162,7 @@ class DungeonGame:
                 "W  K  W E W E  W",
                 "W         W    W",
                 "WWWWWWWWWWWWWWWW"
-            ]
+            ],
         ]
 
         # Inisialisasi Tembok 
@@ -172,7 +172,7 @@ class DungeonGame:
         self.player = Player(50, 50)
         self.player.walls = self.walls
         self.all_sprites.add(self.player)
-        self.door = GameObject(650, 500, (139, 69, 19), 50, 50, image_path="pintu.png")
+        self.door = GameObject(650, 500, (139, 69, 19), 50, 50, image_path="assets/images/pintu.png")
         self.all_sprites.add(self.door)
 
         # Buat item dan musuh secara dinamis
@@ -362,7 +362,7 @@ class DungeonGame:
     def draw(self):
         if self.state == "MENU":
             self.screen.fill((20, 20, 40))
-            title = pygame.font.SysFont("Arial", 50, bold=True).render("DUNGEON ESCAPE PRO", True, (255, 215, 0))
+            title = pygame.font.SysFont("Arial", 50, bold=True).render("DUNGEON ESCAPE", True, (255, 215, 0))
             self.screen.blit(title, (180, 200))
             hint = self.font.render("Press SPACE to Start", True, (255, 255, 255))
             self.screen.blit(hint, (300, 350))
